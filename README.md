@@ -88,12 +88,13 @@ python codes/compare_darkprop_iteration_flux.py --darkprop <darkprop-output.hdf5
 
 ## Source relationship
 
-This repository is not meant to be a full mirror of the original notes
+This repository is not meant to be a full mirror of the manuscript working
 directory. It is the code-release subset:
 
-- `codes/*.py` are copied from the working `Notes/codes/` directory.
+- `codes/*.py` contain the deterministic Boltzmann-iteration calculation and
+  analysis helpers.
 - `external/darkprop/` is copied from the modified DarkProp v0.3.0 source tree
-  used in the working notes directory.
+  used for the Monte Carlo comparison.
 - `codes/output/`, DarkProp build folders, and DarkProp example output folders
   are deliberately ignored.
 
