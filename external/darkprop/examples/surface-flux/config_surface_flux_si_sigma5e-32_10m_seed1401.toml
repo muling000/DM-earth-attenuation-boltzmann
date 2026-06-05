@@ -1,4 +1,4 @@
-id = "wl-flux-si-sigma5e-32-pilot-1m"
+id = "surface-flux-si-sigma5e-32-10m-seed1401"
 
 [input]
 dm_model = "SI"
@@ -8,7 +8,7 @@ mchi_file = "./mchi.txt"
 sigma_file = "./sigma_5e-32.txt"
 Tcut = 1.7073777777777778e-13
 [input.flux]
-flux_file = "./surface_flux_wl.txt"
+flux_file = "./surface_flux.txt"
 point_source = false
 Tmin = 1.7073777777777778e-13
 Tmax = 1.7073777777777781e-05
@@ -16,13 +16,13 @@ Tmax = 1.7073777777777781e-05
 [output]
 outdir = "./out"
 overwrite = false
-maximal_simulation = 100000000
-sample_size = 1000000
+maximal_simulation = 600000000
+sample_size = 10000000
 depth = [2.4]  # [km]
 chunk_size = 100000
 full_tracks = 0
 [output.log]
-screen_log_lag = 1000000
+screen_log_lag = 10000000
 
 [numerical]
-random_seed = 1001
+random_seed = 1401

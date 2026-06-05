@@ -7,7 +7,7 @@ import h5py
 import matplotlib.pyplot as plt
 import numpy as np
 
-import iteration_dirac_dm_isoscalar_vector_coupling as wl
+import iteration_dirac_dm_isoscalar_vector_coupling as transport
 
 
 def bl_to_xyz(bl: np.ndarray) -> np.ndarray:
@@ -84,25 +84,26 @@ def reconstruct_darkprop_spectrum(
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Compare a DarkProp WL-flux run with the original iteration result."
+        description="Compare a DarkProp surface-flux run with the deterministic iteration result."
     )
     parser.add_argument(
         "--darkprop",
         type=Path,
-        default=Path(__file__).resolve().parent
-        / "darkprop-v0.3.0"
+        default=Path(__file__).resolve().parent.parent
+        / "external"
+        / "darkprop"
         / "examples"
-        / "wl-flux"
+        / "surface-flux"
         / "out"
-        / "wl-flux-si-compare"
-        / "wl-flux-si-compare_mchi5.000e+00GeV_sigma1.000e-33cm2.hdf5",
+        / "surface-flux-si-compare"
+        / "surface-flux-si-compare_mchi5.000e+00GeV_sigma1.000e-33cm2.hdf5",
     )
     parser.add_argument(
         "--iteration",
         type=Path,
         default=Path(__file__).resolve().parent
         / "output"
-        / "dirac_dm_vector_mchiMeV_5000_sigmaChiN_1.000e-33_wl-like_vmin1e-20_production.npz",
+        / "dirac_dm_vector_mchiMeV_5000_sigmaChiN_1.000e-33_quasi-uniform-v_vmin1e-20_production_radial_default.npz",
     )
     parser.add_argument("--group", default="depth_0")
     parser.add_argument("--nbins", type=int, default=80)
@@ -111,9 +112,9 @@ def main() -> int:
     args = parser.parse_args()
 
     iteration = np.load(args.iteration)
-    t_iter_gev = np.asarray(iteration["T_grid"], dtype=np.float64) / wl.GEV
+    t_iter_gev = np.asarray(iteration["T_grid"], dtype=np.float64) / transport.GEV
     cumulative = np.asarray(iteration["cumulative_spectra"], dtype=np.float64)[-1]
-    iter_flux = cumulative / (2.0 * np.pi) ** 3 * wl.GEV
+    iter_flux = cumulative / (2.0 * np.pi) ** 3 * transport.GEV
 
     tmax = float(t_iter_gev[-1])
     bins = np.geomspace(args.tmin_gev, tmax, args.nbins + 1)
@@ -141,7 +142,7 @@ def main() -> int:
 
     output = args.output
     if output is None:
-        output = args.darkprop.with_name("wl_flux_darkprop_vs_iteration.png")
+        output = args.darkprop.with_name("surface_flux_darkprop_vs_iteration.png")
     output.parent.mkdir(parents=True, exist_ok=True)
 
     fig, (ax, rax) = plt.subplots(

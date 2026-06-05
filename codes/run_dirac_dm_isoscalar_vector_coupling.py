@@ -197,7 +197,7 @@ def build_solver_and_geometry(
     sigma_chi_n = float(config["sigma_chin_cm2"])
     detector_depth = float(config["detector_depth_km"]) * mod.KM
 
-    model = mod.make_wl_benchmark_model_from_sigma(
+    model = mod.make_benchmark_model_from_sigma(
         m_chi=m_chi,
         sigma_chi_n=sigma_chi_n,
         sigma_in_cm2=True,
@@ -269,7 +269,7 @@ def run_iteration(
     detector_radius: float,
     config: dict[str, float | int | str],
 ) -> dict[str, np.ndarray | float | int]:
-    surface_spectrum = mod.make_wl_surface_spectrum(solver.model.m_chi)
+    surface_spectrum = mod.make_benchmark_surface_spectrum(solver.model.m_chi)
     term_field = solver.initial_term(surface_spectrum)
     term_detector = mod.detector_spectrum(term_field, solver.grid.r, solver.grid.u, detector_radius)
 
@@ -348,7 +348,7 @@ def save_output(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     detector_depth = solver.model.earth_radius - detector_radius
     velocity_grid = np.sqrt(2.0 * solver.grid.T / solver.model.m_chi)
-    incoming_surface = mod.make_wl_surface_spectrum(solver.model.m_chi)(solver.grid.T)
+    incoming_surface = mod.make_benchmark_surface_spectrum(solver.model.m_chi)(solver.grid.T)
 
     np.savez_compressed(
         output_path,

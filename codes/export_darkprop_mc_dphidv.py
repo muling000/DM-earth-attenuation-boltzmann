@@ -50,7 +50,7 @@ def reconstruct_dphidv(
     kinetic_energy = kinetic_energy[valid]
     event_weight = weight[valid] / abs_cos[valid]
 
-    # Match the non-relativistic v grid convention used in the WL iteration.
+    # Match the non-relativistic v grid convention used in the Boltzmann iteration.
     velocity = np.sqrt(2.0 * kinetic_energy / mchi)
     centers = 0.5 * (bins[:-1] + bins[1:])
     widths = np.diff(bins)
@@ -115,7 +115,7 @@ def reconstruct_merged_dphidv(
         raise ValueError("No HDF5 files were provided.")
 
     # DarkProp's official reconstruction gives the angular-averaged flux per sr.
-    # Multiply by 4*pi to match the WL script's dPhi/dv [cm^-2 s^-1].
+    # Multiply by 4*pi to match the iteration script's dPhi/dv [cm^-2 s^-1].
     scale = (
         4.0
         * np.pi
@@ -148,13 +148,14 @@ def main() -> int:
         "--darkprop",
         type=Path,
         nargs="+",
-        default=Path(__file__).resolve().parent
-        / "darkprop-v0.3.0"
+        default=Path(__file__).resolve().parent.parent
+        / "external"
+        / "darkprop"
         / "examples"
-        / "wl-flux"
+        / "surface-flux"
         / "out"
-        / "wl-flux-si-compare"
-        / "wl-flux-si-compare_mchi5.000e+00GeV_sigma1.000e-33cm2.hdf5",
+        / "surface-flux-si-compare"
+        / "surface-flux-si-compare_mchi5.000e+00GeV_sigma1.000e-33cm2.hdf5",
     )
     parser.add_argument("--group", default="depth_0")
     parser.add_argument("--nbins", type=int, default=180)

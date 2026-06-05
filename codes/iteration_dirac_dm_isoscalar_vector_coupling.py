@@ -27,7 +27,7 @@ except ImportError:  # pragma: no cover - optional dependency fallback
 FloatArray = npt.NDArray[np.float64]
 SpectrumInput = Callable[[FloatArray], FloatArray] | Sequence[float] | FloatArray
 
-# Unit and input conventions extracted from `Earth Attenuation (Spherical).wl`.
+# Unit and input conventions extracted from the Mathematica derivation script.
 EV = 1.0
 GEV = 1.0e9 * EV
 MEV = 1.0e6 * EV
@@ -42,15 +42,15 @@ KM = 1000.0 * METER
 AMU = 0.93149410242 * GEV
 NUCLEON_MASS = AMU
 
-WL_EARTH_DENSITY = 2.7 * GRAM / CM**3
-WL_EARTH_RADIUS = 6371.0 * KM
-WL_DM_DENSITY = 0.3 * GEV / CM**3
-WL_VRMS = 270.0 / 300000.0
-WL_VSUN = 220.0 / 300000.0
-WL_VESC = 544.0 / 300000.0
-WL_VEARTH = 240.0 / 300000.0
-WL_VMAX = WL_VESC + WL_VEARTH
-WL_CRUST_COMPOSITION = (
+BENCHMARK_EARTH_DENSITY = 2.7 * GRAM / CM**3
+BENCHMARK_EARTH_RADIUS = 6371.0 * KM
+BENCHMARK_DM_DENSITY = 0.3 * GEV / CM**3
+BENCHMARK_VRMS = 270.0 / 300000.0
+BENCHMARK_VSUN = 220.0 / 300000.0
+BENCHMARK_VESC = 544.0 / 300000.0
+BENCHMARK_VEARTH = 240.0 / 300000.0
+BENCHMARK_VMAX = BENCHMARK_VESC + BENCHMARK_VEARTH
+BENCHMARK_CRUST_COMPOSITION = (
     ("O", 16, 0.466),
     ("Si", 28, 0.277),
     ("Al", 27, 0.081),
@@ -635,10 +635,10 @@ def _evaluate_spectrum_point(
     return float(np.squeeze(np.asarray(value, dtype=np.float64)))
 
 
-def wl_earth_species() -> tuple[NuclearSpecies, ...]:
+def benchmark_earth_species() -> tuple[NuclearSpecies, ...]:
     species: list[NuclearSpecies] = []
-    for name, mass_number, mass_fraction in WL_CRUST_COMPOSITION:
-        number_density = mass_fraction * WL_EARTH_DENSITY / (mass_number * AMU)
+    for name, mass_number, mass_fraction in BENCHMARK_CRUST_COMPOSITION:
+        number_density = mass_fraction * BENCHMARK_EARTH_DENSITY / (mass_number * AMU)
         species.append(
             NuclearSpecies(
                 name=name,
@@ -650,39 +650,39 @@ def wl_earth_species() -> tuple[NuclearSpecies, ...]:
     return tuple(species)
 
 
-def wl_velocity_distribution(velocity: float | FloatArray) -> float | FloatArray:
+def benchmark_velocity_distribution(velocity: float | FloatArray) -> float | FloatArray:
     v = np.asarray(velocity, dtype=np.float64)
-    nesc = math.pi * WL_VSUN**2 * (
-        math.sqrt(math.pi) * WL_VSUN * math.erf(WL_VESC / WL_VSUN)
-        - 2.0 * WL_VESC * math.exp(-(WL_VESC / WL_VSUN) ** 2)
+    nesc = math.pi * BENCHMARK_VSUN**2 * (
+        math.sqrt(math.pi) * BENCHMARK_VSUN * math.erf(BENCHMARK_VESC / BENCHMARK_VSUN)
+        - 2.0 * BENCHMARK_VESC * math.exp(-(BENCHMARK_VESC / BENCHMARK_VSUN) ** 2)
     )
-    exp_esc = math.exp(-(WL_VESC / WL_VSUN) ** 2)
+    exp_esc = math.exp(-(BENCHMARK_VESC / BENCHMARK_VSUN) ** 2)
 
-    term_1 = 2.0 * np.exp(-(v * v + WL_VEARTH * WL_VEARTH) / (WL_VSUN * WL_VSUN))
-    term_1 *= np.sinh(2.0 * v * WL_VEARTH / (WL_VSUN * WL_VSUN))
+    term_1 = 2.0 * np.exp(-(v * v + BENCHMARK_VEARTH * BENCHMARK_VEARTH) / (BENCHMARK_VSUN * BENCHMARK_VSUN))
+    term_1 *= np.sinh(2.0 * v * BENCHMARK_VEARTH / (BENCHMARK_VSUN * BENCHMARK_VSUN))
 
     term_2 = (
-        np.exp(-((v + WL_VEARTH) ** 2) / (WL_VSUN * WL_VSUN)) - exp_esc
-    ) * _heaviside(np.abs(v + WL_VEARTH) - WL_VESC)
+        np.exp(-((v + BENCHMARK_VEARTH) ** 2) / (BENCHMARK_VSUN * BENCHMARK_VSUN)) - exp_esc
+    ) * _heaviside(np.abs(v + BENCHMARK_VEARTH) - BENCHMARK_VESC)
     term_3 = (
-        np.exp(-((v - WL_VEARTH) ** 2) / (WL_VSUN * WL_VSUN)) - exp_esc
-    ) * _heaviside(np.abs(v - WL_VEARTH) - WL_VESC)
+        np.exp(-((v - BENCHMARK_VEARTH) ** 2) / (BENCHMARK_VSUN * BENCHMARK_VSUN)) - exp_esc
+    ) * _heaviside(np.abs(v - BENCHMARK_VEARTH) - BENCHMARK_VESC)
 
-    prefactor = math.pi * v * WL_VSUN**2 / (WL_VEARTH * nesc)
-    result = prefactor * (term_1 + term_2 - term_3) * _heaviside(WL_VEARTH + WL_VESC - v)
+    prefactor = math.pi * v * BENCHMARK_VSUN**2 / (BENCHMARK_VEARTH * nesc)
+    result = prefactor * (term_1 + term_2 - term_3) * _heaviside(BENCHMARK_VEARTH + BENCHMARK_VESC - v)
     if np.isscalar(velocity):
         return float(np.asarray(result))
     return np.asarray(result, dtype=np.float64)
 
 
-def wl_energy_distribution(m_chi: float, kinetic_energy: float | FloatArray) -> float | FloatArray:
+def benchmark_energy_distribution(m_chi: float, kinetic_energy: float | FloatArray) -> float | FloatArray:
     energy = np.asarray(kinetic_energy, dtype=np.float64)
     result = np.zeros_like(energy, dtype=np.float64)
 
     positive = energy > 0.0
     if np.any(positive):
         velocity = np.sqrt(2.0 * energy[positive] / m_chi)
-        result[positive] = np.asarray(wl_velocity_distribution(velocity), dtype=np.float64) / np.sqrt(
+        result[positive] = np.asarray(benchmark_velocity_distribution(velocity), dtype=np.float64) / np.sqrt(
             2.0 * m_chi * energy[positive]
         )
 
@@ -691,7 +691,7 @@ def wl_energy_distribution(m_chi: float, kinetic_energy: float | FloatArray) -> 
     return result
 
 
-def wl_gincoming(m_chi: float, kinetic_energy: float | FloatArray) -> float | FloatArray:
+def benchmark_gincoming(m_chi: float, kinetic_energy: float | FloatArray) -> float | FloatArray:
     energy = np.asarray(kinetic_energy, dtype=np.float64)
     velocity = np.zeros_like(energy, dtype=np.float64)
     positive = energy > 0.0
@@ -699,32 +699,32 @@ def wl_gincoming(m_chi: float, kinetic_energy: float | FloatArray) -> float | Fl
         velocity[positive] = np.sqrt(2.0 * energy[positive] / m_chi)
 
     unit_factor = CM**2 * SEC * EV
-    result = unit_factor * 2.0 * math.pi**2 * velocity * WL_DM_DENSITY / m_chi
-    result *= np.asarray(wl_energy_distribution(m_chi, energy), dtype=np.float64)
+    result = unit_factor * 2.0 * math.pi**2 * velocity * BENCHMARK_DM_DENSITY / m_chi
+    result *= np.asarray(benchmark_energy_distribution(m_chi, energy), dtype=np.float64)
 
     if np.isscalar(kinetic_energy):
         return float(result.reshape(-1)[0])
     return result
 
 
-def make_wl_surface_spectrum(m_chi: float) -> Callable[[FloatArray], FloatArray]:
+def make_benchmark_surface_spectrum(m_chi: float) -> Callable[[FloatArray], FloatArray]:
     def surface_spectrum(kinetic_grid: FloatArray) -> FloatArray:
-        return np.asarray(wl_gincoming(m_chi, kinetic_grid), dtype=np.float64)
+        return np.asarray(benchmark_gincoming(m_chi, kinetic_grid), dtype=np.float64)
 
     return surface_spectrum
 
 
-def make_wl_benchmark_model(
+def make_benchmark_model(
     m_chi: float,
     cutoff_scale: float,
     *,
-    earth_radius: float = WL_EARTH_RADIUS,
+    earth_radius: float = BENCHMARK_EARTH_RADIUS,
 ) -> BenchmarkModel:
     return BenchmarkModel(
         m_chi=m_chi,
         cutoff_scale=cutoff_scale,
         earth_radius=earth_radius,
-        species=wl_earth_species(),
+        species=benchmark_earth_species(),
     )
 
 
@@ -745,16 +745,16 @@ def cutoff_scale_from_sigma_chi_n(m_chi: float, sigma_chi_n: float) -> float:
     return (mu_chi_n * mu_chi_n / (math.pi * sigma_chi_n)) ** 0.25
 
 
-def make_wl_benchmark_model_from_sigma(
+def make_benchmark_model_from_sigma(
     m_chi: float,
     sigma_chi_n: float,
     *,
     sigma_in_cm2: bool = True,
-    earth_radius: float = WL_EARTH_RADIUS,
+    earth_radius: float = BENCHMARK_EARTH_RADIUS,
 ) -> BenchmarkModel:
     sigma_natural = sigma_cm2_to_natural(sigma_chi_n) if sigma_in_cm2 else sigma_chi_n
     cutoff_scale = cutoff_scale_from_sigma_chi_n(m_chi, sigma_natural)
-    return make_wl_benchmark_model(
+    return make_benchmark_model(
         m_chi=m_chi,
         cutoff_scale=cutoff_scale,
         earth_radius=earth_radius,
@@ -774,7 +774,7 @@ def build_log_energy_grid(
     n_t: int,
     *,
     t_min_fraction: float = 1.0e-3,
-    vmax: float = WL_VMAX,
+    vmax: float = BENCHMARK_VMAX,
 ) -> FloatArray:
     t_max = 0.5 * m_chi * vmax * vmax
     t_min = max(t_min_fraction * t_max, 1.0e-12 * EV)
@@ -785,7 +785,7 @@ def build_quasi_uniform_speed_energy_grid(
     m_chi: float,
     n_t: int,
     *,
-    vmax: float = WL_VMAX,
+    vmax: float = BENCHMARK_VMAX,
     controller: float = 30.0,
     v_min_fraction: float = 1.0e-20,
 ) -> FloatArray:

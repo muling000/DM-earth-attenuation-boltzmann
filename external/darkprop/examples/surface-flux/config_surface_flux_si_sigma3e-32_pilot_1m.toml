@@ -1,4 +1,4 @@
-id = "wl-flux-si-sigma3e-32-pilot-1m"
+id = "surface-flux-si-sigma3e-32-pilot-1m"
 
 [input]
 dm_model = "SI"
@@ -8,7 +8,7 @@ mchi_file = "./mchi.txt"
 sigma_file = "./sigma_3e-32.txt"
 Tcut = 1.7073777777777778e-13
 [input.flux]
-flux_file = "./surface_flux_wl.txt"
+flux_file = "./surface_flux.txt"
 point_source = false
 Tmin = 1.7073777777777778e-13
 Tmax = 1.7073777777777781e-05

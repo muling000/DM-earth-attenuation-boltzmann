@@ -23,7 +23,7 @@ class ValidationResult:
 def build_validation_solver() -> mod.BenchmarkIterationSolver:
     m_chi = 100.0 * mod.MEV
     cutoff_scale = 1.0e3 * mod.GEV
-    model = mod.make_wl_benchmark_model(m_chi=m_chi, cutoff_scale=cutoff_scale)
+    model = mod.make_benchmark_model(m_chi=m_chi, cutoff_scale=cutoff_scale)
     grid = mod.PhaseSpaceGrid(
         r=np.linspace(0.0, model.earth_radius, 9),
         u=np.linspace(-1.0, 1.0, 7),
@@ -129,7 +129,7 @@ def u_clenshaw_curtis_exactness() -> ValidationResult:
 
 
 def radial_grid_small_lambda_spacing() -> ValidationResult:
-    model = mod.make_wl_benchmark_model_from_sigma(
+    model = mod.make_benchmark_model_from_sigma(
         m_chi=5000.0 * mod.MEV,
         sigma_chi_n=5.0e-32,
         sigma_in_cm2=True,
@@ -155,7 +155,7 @@ def radial_grid_small_lambda_spacing() -> ValidationResult:
 
 
 def radial_grid_large_lambda_spacing() -> ValidationResult:
-    earth_radius = mod.WL_EARTH_RADIUS
+    earth_radius = mod.BENCHMARK_EARTH_RADIUS
     detector_depth = 2.4 * mod.KM
     mean_free_path = 10000.0 * mod.KM
     tail_tau = 8.0

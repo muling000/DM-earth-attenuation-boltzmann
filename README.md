@@ -15,9 +15,9 @@ codes/
   run_dirac_dm_isoscalar_vector_coupling.py
   verify_iteration_integrals.py
   plot_detector_cumulative_spectra.py
-  generate_darkprop_wl_flux.py
+  generate_darkprop_surface_flux.py
   export_darkprop_mc_dphidv.py
-  compare_darkprop_wl_flux.py
+  compare_darkprop_iteration_flux.py
 
 external/
   darkprop/
@@ -72,10 +72,10 @@ The `external/darkprop/` tree is the modified DarkProp source copy that matches
 the comparison scripts in `codes/`. Build products and Monte Carlo output
 directories are excluded from version control.
 
-Generate WL-like surface flux input files for DarkProp:
+Generate benchmark surface flux input files for DarkProp:
 
 ```text
-python codes/generate_darkprop_wl_flux.py --mchi-mev 5000 --sigma-chin-cm2 1e-33
+python codes/generate_darkprop_surface_flux.py --mchi-mev 5000 --sigma-chin-cm2 1e-33
 ```
 
 After running the corresponding DarkProp Monte Carlo, export and compare spectra
@@ -83,7 +83,7 @@ with:
 
 ```text
 python codes/export_darkprop_mc_dphidv.py --darkprop <darkprop-output.hdf5>
-python codes/compare_darkprop_wl_flux.py --darkprop <darkprop-output.hdf5> --iteration <iteration-output.npz>
+python codes/compare_darkprop_iteration_flux.py --darkprop <darkprop-output.hdf5> --iteration <iteration-output.npz>
 ```
 
 ## Source relationship
@@ -92,7 +92,8 @@ This repository is not meant to be a full mirror of the original notes
 directory. It is the code-release subset:
 
 - `codes/*.py` are copied from the working `Notes/codes/` directory.
-- `external/darkprop/` is copied from the modified `Notes/codes/darkprop-v0.3.0/`.
+- `external/darkprop/` is copied from the modified DarkProp v0.3.0 source tree
+  used in the working notes directory.
 - `codes/output/`, DarkProp build folders, and DarkProp example output folders
   are deliberately ignored.
 
