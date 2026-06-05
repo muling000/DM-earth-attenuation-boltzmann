@@ -1,0 +1,36 @@
+id = "solardm"
+
+[input]
+type = "source"
+dm_model = "SolarDM"
+medium_model = "Sun"
+
+mchis = [1.00075e-3]  # [GeV]
+sigmas = [1e-50, 1e-34]  # [cm^2]
+Tcut = 1e-6  # cutoff energy [GeV]
+
+[input.source]
+inv_cdf_r_file = "./data/inverseCDFIntd2Ngammadtdr.csv"
+inv_cdf_T_file = "./data/inverseCDFIntdSFactordE-mdm1.00075MeV.csv"
+
+[input.solardm]
+solar_density_integral_file = "./data/normalizedDensityIntegral.csv"
+temperature_scale = 1.0  # multiply to the actual solar temperature
+
+[output]
+outdir = "./out"
+overwrite = true
+file_name_style = "long"  # "short" "long"
+maximal_simulation = 1000_000_000
+sample_size = 10_000_000  # number of samples
+depth = [0.0]  # [km]
+
+chunk_size = 10000  # hdf5 chunk size
+store_time = false
+full_tracks = 0  # the number of full tracks to output, do not output if 0
+
+[output.log]
+screen_log_lag = 10000  # screen log output interval
+
+[numerical]
+random_seed = 1

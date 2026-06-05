@@ -1,0 +1,15 @@
+image: python:3.9-alpine
+
+pages:
+  script:
+    - sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+    - apk update && apk add doxygen
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -U sphinx sphinx_rtd_theme breathe
+    - cd docs
+    - doxygen Doxyfile
+    - sphinx-build -b html source ../public
+  artifacts:
+    paths:
+      - public
+  only:
+    - root

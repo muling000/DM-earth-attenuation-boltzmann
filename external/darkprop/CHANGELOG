@@ -1,0 +1,50 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.3.0] - 2024-04-03
+
+### Added
+- New simulation type: "source".
+- New dark matter models: "SolarDM" and "DMElectron".
+- New medium model: "Sun".
+- Add config option input.mmed
+- Add config option input.mediator_limit
+- Add config option input.flux.point_source.
+- Add config option output.overwrite.
+- Add config option output.cos_theta_lower.
+- Add config option output.cos_theta_upper.
+- Add config option output.log.warning_long_track.
+- Add config option output.log.warning_long_track.
+- Add Julia binding.
+
+### Changed
+- Start using cmake as build system.
+- Start using spdlog library for logging.
+- Start using indicators library for progress bar.
+- Change to pybind11 for Python binding.
+- Change the config option "earth_model" to "medium_model".
+- Change the config options "Homo" and "HomoElectron" to "HomeEarth" and "HomoElectronEarth".
+- Rename "Particle::in_earth" to "Particle::in_medium".
+- Rename the previous base class "Earth" to "Medium".
+- Many changes in file and inheritance structures.
+
+### Fixed
+- Fix 0/0 when normalizing a zero Vector3d.
+
+
+## [0.2.0] - 2022-06-24
+
+### Added
+- New simulation types: "intensity" and "sample".
+- New Earth model: "HomoElectron".
+- Add documentation.
+
+### Changed
+- Change the event weight of the halo simulation output.
+- Support relativistic DM particle in PREMEarth.
+
+### Fixed
+- Fix wrong mass unit and Tcut value in the output hdf5 file.

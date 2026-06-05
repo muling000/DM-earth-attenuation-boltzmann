@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Generated numerical outputs
+codes/output/
+*.npz
+*.h5
+*.hdf5
+*.log
+
+# DarkProp local build and generated output
+external/darkprop/build/
+external/darkprop/dist/
+external/darkprop/docs/_build/
+external/darkprop/examples/**/out*/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+*.code-workspace

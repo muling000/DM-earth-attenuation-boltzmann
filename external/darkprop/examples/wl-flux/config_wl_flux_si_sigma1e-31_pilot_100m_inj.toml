@@ -1,0 +1,28 @@
+id = "wl-flux-si-sigma1e-31-pilot-100m-inj"
+
+[input]
+dm_model = "SI"
+medium_model = "HomoEarth"
+type = "flux"
+mchi_file = "./mchi.txt"
+sigma_file = "./sigma_1e-31.txt"
+Tcut = 1.7073777777777778e-13
+[input.flux]
+flux_file = "./surface_flux_wl.txt"
+point_source = false
+Tmin = 1.7073777777777778e-13
+Tmax = 1.7073777777777781e-05
+
+[output]
+outdir = "./out"
+overwrite = false
+maximal_simulation = 100000000
+sample_size = 100000
+depth = [2.4]  # [km]
+chunk_size = 10000
+full_tracks = 0
+[output.log]
+screen_log_lag = 10000000
+
+[numerical]
+random_seed = 901

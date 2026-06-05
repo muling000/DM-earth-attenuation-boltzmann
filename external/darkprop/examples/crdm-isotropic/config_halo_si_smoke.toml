@@ -1,0 +1,27 @@
+id = "halo-si-smoke"
+
+[input]
+dm_model = "SI"
+medium_model = "HomoEarth"
+type = "halo"
+mchi_file = "./mchi.txt"
+sigma_file = "./sigma.txt"
+[input.halo]
+v_earth = [0.0, 0.0, 240.0]  # [km/s]
+v_0 = 220.0                  # [km/s]
+v_esc = 544.0                # [km/s]
+v_min = 1.0e-5               # [km/s]
+v_cut = 1.0e-5               # [km/s]
+
+[output]
+outdir = "./out_halo_si_smoke"
+maximal_simulation = 20000
+sample_size = 100
+depth = [2.4]  # [km]
+chunk_size = 100
+full_tracks = 0
+[output.log]
+screen_log_lag = 100
+
+[numerical]
+random_seed = 1

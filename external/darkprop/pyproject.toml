@@ -1,0 +1,42 @@
+[build-system]
+requires = ["scikit-build-core>=0.3.3", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "darkprop"
+version = "0.3.0"
+description = "Python wrapper for DarkProp"
+readme = "python/README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Chen Xia", email = "xiachen1996@outlook.com"}
+]
+maintainers = [
+  {name = "Chen Xia", email = "xiachen1996@outlook.com"}
+]
+keywords = ["dark matter", "simulation", "Monte Carlo"]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: C++",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Development Status :: 3 - Alpha",
+]
+
+[project.urls]
+homepage = "http://yfzhou.itp.ac.cn/darkprop"
+
+[tool.scikit-build]
+wheel.expand-macos-universal-tags = true
+wheel.packages = ["python/darkprop"]
+
+[tool.scikit-build.cmake.define]
+BUILD_APP = "OFF"
+INSTALL_HEADERS = "OFF"

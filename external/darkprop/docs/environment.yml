@@ -1,0 +1,14 @@
+name: darkpropdoc
+channels:
+  - defaults
+  - conda-forge
+  - pytorch
+dependencies:
+  - breathe
+  - doxygen
+  - myst-parser
+  - python=3.12
+  - sphinx
+  - sphinx-rtd-theme
+  - graphviz
+prefix: /opt/homebrew/Caskroom/miniconda/base/envs/darkpropdoc

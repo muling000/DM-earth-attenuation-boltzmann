@@ -1,0 +1,81 @@
+id = "example"
+
+[input]
+type = "halo"  # "halo" "flux" "intensity" "sample" "source"
+dm_model = "SI"  # "SI" "SIHelm" "SolarDM" "DMElectron"
+medium_model = "HomoEarth"  # "HomoEarth" "HomoElectronEarth" "PREM" "Sun"
+
+mchis = [0.1]  # [GeV]
+sigmas = [1e-34]  # [cm^2]
+# mchi_file = "./input_mchi.txt"
+# sigma_file = "./input_sigma.txt"
+mmed = 1e2  # mediator mass [GeV]
+mediator_limit = "" # "heavy" "light" or ""
+# Tcut = 1e-5  # cutoff energy [GeV]
+
+[input.halo]
+rho_0 = 0.3  # [GeV/cm^3]
+v_esc = 544.0  # [km/s]
+v_0 = 220.0  # [km/s]
+v_earth = [0.0, 0.0, 240.0]  # [km/s]
+v_min = 1e-5  # [km/s]
+v_max = -1.0  # [km/s] negative value means v_earth + v_esc
+v_cut = 1e-5  # [km/s] cutoff speed overwrite Tcut
+
+[input.flux]
+point_source = false
+flux_file = "./input_flux.txt"  # arbitariry name
+# Tmin = 1e-3  # [GeV]
+# Tmax = 1e2   # [GeV]
+
+[input.intensity]
+intensity_file = "./input_intensity.hdf5"  # intensity hdf5 file name
+select_mass = [0, 1, 3]  # select masses in the intensity file with index
+
+[input.sample]
+sample_file = "./input_sample.hdf5"  # arbitariry name
+
+[input.source]
+inv_cdf_r_file = ""
+inv_cdf_T_file = ""
+
+[input.solardm]
+solar_density_integral_file = ""
+temperature_scale = 1.0
+
+[input.geniebdm]
+tune = "GDM23_00a_01_000"
+xsec_file = "xsec_DMHAD.xml"
+cache_file = ""
+event_generator_list = "DMHAD-NOFSI"  # "DMCEL" "DMEL-NOFSI", "DMDIS-NOFSI", "DMRES-NOFSI"
+messenger_thresholds = "Messenger_whisper.xml"
+origin_gz = 1.0  # the original gz used to calculate the xsec_file
+xsec_spline_knots = 1000
+
+[output]
+outdir = "./out"
+overwrite = false
+file_name_style = "short"  # "short" "long"
+maximal_simulation = 10_000_000
+sample_size = 10000  # number of samples on each ring
+depth = [1.4]  # [km]
+rings = 10  # number of rings
+cos_theta_lower = -1.0  # lower bound of ring angle
+cos_theta_upper = 1.0   # upper bound of ring angle
+ring_space = "linear"  # "linear" "cos_linear"
+axis = [1.0, 0.0, 0.0]  # axis of the ring it is always v_earth in halo model
+
+chunk_size = 1000  # hdf5 chunk size
+store_time = false
+full_tracks = 10  # the number of full tracks to output, do not output if 0
+
+[output.log]
+screen_log_lag = 1000 # screen log output interval
+warning_long_track = 1000_000
+
+
+[numerical]
+random_seed = 1
+interp_Tmin = 1e-100
+interp_num = 10000
+sample_buffer_size = 10000

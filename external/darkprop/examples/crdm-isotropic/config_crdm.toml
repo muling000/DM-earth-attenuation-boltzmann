@@ -1,0 +1,25 @@
+id = "crdm"
+
+[input]
+dm_model = "SIHelm"
+medium_model = "HomoEarth"
+type = "flux"
+mchi_file = "./mchi.txt"
+sigma_file = "./sigma.txt"
+[input.flux]
+flux_file = "./surface_flux.txt"
+
+[output]
+outdir = "./out"
+maximal_simulation = 100_000_000
+sample_size = 10_000_000
+depth = [1.4]  # [km]
+chunk_size = 10000  # hdf5 chunk size
+full_tracks = 0
+[output.log]
+screen_log_lag = 10000
+
+[numerical]
+random_seed = 1
+interp_Tmin = 1e-20
+interp_num = 10000

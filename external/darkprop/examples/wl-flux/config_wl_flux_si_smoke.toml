@@ -1,0 +1,25 @@
+id = "wl-flux-si-smoke"
+
+[input]
+dm_model = "SI"
+medium_model = "HomoEarth"
+type = "flux"
+mchi_file = "./mchi.txt"
+sigma_file = "./sigma.txt"
+[input.flux]
+flux_file = "./surface_flux_wl.txt"
+point_source = false
+
+[output]
+outdir = "./out"
+overwrite = true
+maximal_simulation = 20000
+sample_size = 200
+depth = [2.4]  # [km]
+chunk_size = 200
+full_tracks = 0
+[output.log]
+screen_log_lag = 100
+
+[numerical]
+random_seed = 1
