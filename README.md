@@ -100,8 +100,7 @@ directory. It is the code-release subset:
 
 If you use these codes, cite the associated work:
 
-Chuan-Yang Xing and Chen Xia, "The Boltzmann Equation Approach to the Dark
-Matter Attenuation inside Earth".
+Chuan-Yang Xing and Chen Xia, "Dark Matter Attenuation inside the Earth: A Boltzmann Equation Approach".
 
 ## License
 
