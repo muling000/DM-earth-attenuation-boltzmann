@@ -24,8 +24,6 @@ external/
     modified DarkProp v0.3.0 source used for consistency checks
 ```
 
-The Mathematica plotting notebook/script from the working directory is not
-included in this release.
 
 ## Python setup
 

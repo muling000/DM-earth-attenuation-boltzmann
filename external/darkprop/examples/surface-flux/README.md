@@ -22,9 +22,12 @@ Local DarkProp source edits already made:
 - `darkprop/HomoEarth.hpp`: changed Fe from `57*constants::mu` to
   `56*constants::mu`.
 
-## Existing Results
+## Reference MC Run Outputs
 
-Reliable MC tables:
+The full Monte Carlo HDF5 files and exported tables are generated under `out/`
+when the DarkProp runs are executed.
+
+Reference runs used for comparison:
 
 - `sigma_chiN = 1e-33 cm^2`
   - Total MC sample: `50,000,000` detector-sphere crossings.
