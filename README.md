@@ -98,9 +98,21 @@ directory. It is the code-release subset:
 
 ## Citation
 
-If you use these codes, cite the associated work:
+If you use these codes, cite the associated work ([`CITATION.bib`](CITATION.bib)):
 
-Chuan-Yang Xing and Chen Xia, "Dark Matter Attenuation inside the Earth: A Boltzmann Equation Approach".
+Chuan-Yang Xing and Chen Xia, "Dark Matter Attenuation inside the Earth: A Boltzmann Equation Approach", arXiv:2606.16204.
+
+```bibtex
+@article{Xing:2026bbq,
+    author = "Xing, Chuan-Yang and Xia, Chen",
+    title = "{Dark Matter Attenuation inside the Earth: A Boltzmann Equation Approach}",
+    eprint = "2606.16204",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-ph",
+    month = "6",
+    year = "2026"
+}
+```
 
 ## License
 
