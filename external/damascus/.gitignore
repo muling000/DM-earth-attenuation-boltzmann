@@ -1,0 +1,37 @@
+*.DS_Store
+.depend
+
+#Ignore
+*.sublime-project
+*.sublime-workspace
+
+#Ignore results and output files
+*.log
+*.speed
+*.rho
+*.LUX
+*.CRESST-II
+data/*
+!data/README.md
+
+#Ignore executables and results
+bin/*
+!bin/.test.cfg
+!bin/README.md
+!bin/config.cfg
+!bin/boltzmann_benchmark.cfg
+results/*
+!results/README.md
+
+# Ignore build files
+*.o
+
+# Exclude upstream documentation media and legacy plotting assets from this
+# cleaned code-release snapshot.
+docs/
+plots/
+
+# Ignore codecove files
+*.gcov
+*.gcda
+*.gcno

@@ -18,10 +18,13 @@ codes/
   generate_darkprop_surface_flux.py
   export_darkprop_mc_dphidv.py
   compare_darkprop_iteration_flux.py
+  plot_damascus_boltzmann_dphidv.py
 
 external/
   darkprop/
     modified DarkProp v0.3.0 source used for consistency checks
+  damascus/
+    modified DaMaSCUS source and Boltzmann benchmark configuration
 ```
 
 
@@ -84,6 +87,38 @@ python codes/export_darkprop_mc_dphidv.py --darkprop <darkprop-output.hdf5>
 python codes/compare_darkprop_iteration_flux.py --darkprop <darkprop-output.hdf5> --iteration <iteration-output.npz>
 ```
 
+## DaMaSCUS benchmark workflow
+
+&emsp;&emsp;The `external/damascus/` tree contains the modified DaMaSCUS source used for the homogeneous-Earth benchmark. The benchmark-specific changes and parameters are summarized in `external/damascus/BOLTZMANN_BENCHMARK.md`.
+
+Build and run DaMaSCUS from its source directory:
+
+```text
+cd external/damascus
+make
+cd bin
+mpirun -n 4 ./DaMaSCUS-Simulator boltzmann_benchmark.cfg
+mpirun -n 4 ./DaMaSCUS-Analyzer boltzmann_benchmark_5GeV_5e-32_vcut10_3m
+```
+
+&emsp;&emsp;Building DaMaSCUS requires an MPI C++ compiler, Eigen, libconfig++, and `pkg-config`. If Eigen is not discoverable through `pkg-config`, pass its compiler flag explicitly, for example `make EIGEN_CFLAGS=-I/path/to/eigen3`.
+
+&emsp;&emsp;The full benchmark requests three million detector samples and is not a quick smoke test. Its generated `data/` and `results/` files are ignored by Git.
+
+Export the fine-bin DarkProp table used by the three-way comparison:
+
+```text
+python codes/export_darkprop_mc_dphidv.py --darkprop <run1.hdf5> <run2.hdf5> --nbins 1000 --vmin 3.3356409519815205e-6 --output codes/output/darkprop_mc_dphidv_vmin1kms_fine1000.dat
+```
+
+After generating the deterministic Boltzmann result, create the three-way comparison with:
+
+```text
+python codes/plot_damascus_boltzmann_dphidv.py
+```
+
+&emsp;&emsp;Use `--damascus-data`, `--boltzmann`, and `--darkprop` to select non-default output locations. Generated plots are written to `codes/output/`.
+
 ## Source relationship
 
 This repository is not meant to be a full mirror of the manuscript working
@@ -93,8 +128,10 @@ directory. It is the code-release subset:
   analysis helpers.
 - `external/darkprop/` is copied from the modified DarkProp v0.3.0 source tree
   used for the Monte Carlo comparison.
-- `codes/output/`, DarkProp build folders, and DarkProp example output folders
-  are deliberately ignored.
+- `external/damascus/` is copied from the modified DaMaSCUS source tree used for
+  the homogeneous-Earth Monte Carlo benchmark.
+- `codes/output/` and Monte Carlo build and output folders are deliberately
+  ignored.
 
 ## Citation
 
@@ -116,4 +153,4 @@ Chuan-Yang Xing and Chen Xia, "Dark Matter Attenuation inside the Earth: A Boltz
 
 ## License
 
-This code release is distributed under the MIT License. See `LICENSE`.
+&emsp;&emsp;This code release is distributed under the MIT License. See `LICENSE`. Bundled DarkProp and DaMaSCUS sources retain the license files included in their respective directories.
